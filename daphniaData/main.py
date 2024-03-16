@@ -76,7 +76,7 @@ for i in range(len(sites)):
     fig2 = plt.figure()
     plt.bar(df_size['year'], df_size['zooMeanLength'], color='lightgreen')
     plt.xlabel("Year")
-    plt.ylabel("Count")
+    plt.ylabel("Size")
     plt.ylim(0.00, 2.20)
     plt.title("Daphnia Size Per Year in Site " + sites[i])
 
