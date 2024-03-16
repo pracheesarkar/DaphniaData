@@ -1,5 +1,7 @@
+Data product from [NEON Zooplankton collection] https://data.neonscience.org/data-products/DP1.20219.001 (DP1.20219.001)
 
-**Bold**Neon Aquatic Site Information [modified from NEON.DOC.00152vB]
+
+**Table 1.** Neon Aquatic Site Information (modified from NEON.DOC.00152vB)
 | Domain Number	| Site ID |	Site Name	| Site Class | Domain Name | Type	| State |
 | ------------- | ------- | --------- | ---------- | ----------- | ---- | ----- |
 | 03 | BARC	| Barco Lake | Lake | Southeast | Core |	FL |
