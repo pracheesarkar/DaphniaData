@@ -1,2 +1,0 @@
-def Daphnia():
-    print("Daphnia");
