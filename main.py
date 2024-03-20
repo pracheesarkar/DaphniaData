@@ -1,6 +1,7 @@
 import rpy2
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import importr
+from geojson import MultiPoint, Feature, FeatureCollection, dumps
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -20,23 +21,34 @@ rpy2_logger.setLevel(logging.ERROR)
 neonUtilities = importr('neonUtilities')
 
 # read and merge zoo_taxonomyProcessed.csv and zoo_fieldData.csv
-data = pd.read_csv('/Users/pracheesarkar/Documents/AlvaradoLab/NEON_zooplankton/stackedFiles/zoo_taxonomyProcessed.csv')
-data2 = pd.read_csv('/Users/pracheesarkar/Documents/AlvaradoLab/NEON_zooplankton/stackedFiles/zoo_fieldData.csv')
-dataMerged = pd.merge(data, data2, on='sampleID')
+# edit this base_url variable to the folder where your csv files are. 
+# best practice would be to store the files in this repo/folder. just ignore them when we push to git
+def get_data(daphnia=False):
+    # base_url = '/mnt/c/Users/nebul/Downloads/NEON_zooplankton 2/NEON_zooplankton/stackedFiles'
+    data = pd.read_csv("./data/zoo_taxonomyProcessed.csv")
+    data2 = pd.read_csv("./data/zoo_fieldData.csv")
+    dataMerged = pd.merge(data, data2, on='sampleID')
+    dataDaphnia = dataMerged[dataMerged.subfamily == 'Daphniidae']
 
-# filter data to only show Daphnia
-dataDaphnia = dataMerged[dataMerged.subfamily == 'Daphniidae']
-df = pd.DataFrame(dataDaphnia)
-
+    # filter data to only show Daphnia
+    if daphnia:
+        df = pd.DataFrame(dataDaphnia)
+        df.to_csv("../data/daphnia.csv")
+    return dataMerged, dataDaphnia
 # count total Daphnia collected in a site
+
+#TODO: refactor this code into modules/functions
+
 agg_functions = {'siteID_x': 'first', 'adjCountPerBottle': 'sum', }
+df, dataDaphnia = get_data()
+
 df_count = df.groupby(df['siteID_x']).aggregate(agg_functions)
 
 sites = ['BARC', 'CRAM', 'LIRO', 'PRLA', 'PRPO', 'SUGG', 'TOOK']
 site = df_count['siteID_x']
 count = df_count['adjCountPerBottle']
 
-desiredFolder = '/Users/pracheesarkar/Documents/AlvaradoLab/Daphnia_Data/Figures'
+desiredFolder = './figures'
 
 # plot Daphnia count per site
 fig0 = plt.figure()
